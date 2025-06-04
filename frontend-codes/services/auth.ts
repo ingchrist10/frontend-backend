@@ -1,17 +1,7 @@
 import axios from 'axios';
 import { SignupFormData, LoginFormData } from '@/lib/validations';
 
-declare global {
-  interface Window {
-    _env_: {
-      NEXT_PUBLIC_API_URL: string;
-    };
-  }
-}
-
-const API_URL = typeof window !== 'undefined' 
-  ? (window._env_?.NEXT_PUBLIC_API_URL || 'http://localhost:8002')
-  : 'http://localhost:8002';
+const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
 
 interface AuthResponse {
   access_token: string;

@@ -68,10 +68,9 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'urls'
 AUTH_USER_MODEL = 'authentication.CustomUser'
 
-# Authentication settings
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_USERNAME_REQUIRED = False
+# Authentication settings (updated format)
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
 ACCOUNT_EMAIL_VERIFICATION = 'none'  # Change to 'mandatory' in production
 ACCOUNT_ADAPTER = 'authentication.adapters.CustomAccountAdapter'
 
@@ -131,11 +130,12 @@ REST_AUTH = {
 }
 
 # CORS settings
+CORS_ALLOW_ALL_ORIGINS = True  # Only for development!
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
-CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = [
     'DELETE',
     'GET',
@@ -216,6 +216,7 @@ TEMPLATES = [
 ACCOUNT_LOGIN_METHODS = {'email'}
 ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
 ACCOUNT_EMAIL_VERIFICATION = 'none'  # Change to 'mandatory' in production
+ACCOUNT_ADAPTER = 'authentication.adapters.CustomAccountAdapter'
 
 # Security Settings
 SECURE_BROWSER_XSS_FILTER = True
