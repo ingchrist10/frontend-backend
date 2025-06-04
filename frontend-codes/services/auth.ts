@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { SignupFormData, LoginFormData } from '@/lib/validations';
 
-const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
+const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://0.0.0.0:8000';
 
 interface AuthResponse {
   access_token: string;
@@ -40,8 +40,48 @@ const api = axios.create({
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
   },
 });
+
+// Add request interceptor for development
+api.interceptors.request.use((config) => {
+  console.log('API Request:', {
+    url: config.url,
+    method: config.method,
+    headers: config.headers,
+    data: config.data
+  });
+  return config;
+});
+
+// Add response interceptor for development
+api.interceptors.response.use(
+  (response) => {
+    console.log('API Response:', {
+      status: response.status,
+      data: response.data
+    });
+    return response;
+  },
+  (error) => {
+    console.error('API Error:', {
+      message: error.message,
+      response: error.response?.data,
+      status: error.response?.status
+    });
+    return Promise.reject(error);
+  }
+);
+
+// Add error handling interceptor
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    console.error('API Error:', error.response?.data || error.message);
+    return Promise.reject(error);
+  }
+);
 
 // Add CSRF token and auth token to requests
 api.interceptors.request.use((config) => {

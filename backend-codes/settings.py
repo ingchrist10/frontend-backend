@@ -129,14 +129,10 @@ REST_AUTH = {
     'SESSION_LOGIN': False,
 }
 
-# CORS settings
-CORS_ALLOW_ALL_ORIGINS = True  # Only for development!
+# CORS Settings
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-]
-CORS_ALLOW_METHODS = [
+CORS_ALLOWED_METHODS = [
     'DELETE',
     'GET',
     'OPTIONS',
@@ -144,7 +140,7 @@ CORS_ALLOW_METHODS = [
     'POST',
     'PUT',
 ]
-CORS_ALLOW_HEADERS = [
+CORS_ALLOWED_HEADERS = [
     'accept',
     'accept-encoding',
     'authorization',
