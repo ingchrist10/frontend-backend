@@ -1,4 +1,34 @@
-n new Promise((resolve, reject) => {
+interface AuthMessage {
+  action: 'signin' | 'signup';
+  email: string;
+  password: string;
+}
+
+interface AuthResponse {
+  status: 'success' | 'error';
+  message: string;
+  data?: {
+    user: any;
+    tokens: {
+      refresh: string;
+      access: string;
+    };
+  };
+}
+
+class AuthWebSocketService {
+  private ws: WebSocket | null = null;
+  private readonly url: string;
+  private messageCallbacks: Array<(response: AuthResponse) => void> = [];
+
+  constructor() {
+    const wsProtocol = process.env.NODE_ENV === 'production' ? 'wss' : 'ws';
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'localhost:8000';
+    this.url = `${wsProtocol}://${baseUrl}/ws/auth/`;
+  }
+
+  async connect(): Promise<void> {
+    return new Promise((resolve, reject) => {
       this.ws = new WebSocket(this.url);
 
       this.ws.onopen = () => {
