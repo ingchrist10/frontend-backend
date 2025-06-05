@@ -52,3 +52,9 @@ class SocialAccountSerializer(serializers.ModelSerializer):
         model = SocialAccount
         fields = ('provider', 'uid', 'extra_data')
         read_only_fields = ('provider', 'uid', 'extra_data')
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'first_name', 'last_name', 'profile_picture']
+        read_only_fields = ['profile_picture']

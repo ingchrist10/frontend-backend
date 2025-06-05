@@ -1,26 +1,40 @@
-
-"use client"
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+Mutation } from '@tanstack/react-query';
 import { SignupFormData } from '@/lib/validations';
-import { signupUser } from '@/services/auth';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-// Types for the signup request and response
+import authWebSocketService from '@/services/auth-websocket';
 
-
-type SignupResponse = any
-
-
+interface SignupResponse {
+  status: 'success' | 'error';
+  message: string;
+  data?: {
+    user: any;
+    tokens: {
+      refresh: string;
+      access: string;
+    };
+  };
+}
 
 // Custom hook for signup mutation
 export const useSignupMutation = () => {
+  const router = useRouter();
 
   return useMutation<SignupResponse, Error, SignupFormData>({
-    mutationFn: signupUser,
+    mutationFn: async (data) => {
+      await authWebSocketService.connect();
+      const response = await authWebSocketService.signUp(data.email, data.password);
+      authWebSocketService.disconnect();
+      return response;
+    },
     
     onSuccess: (data) => {
-   
-      console.log('Signup successful:', data);
+      if (data.status === 'success' && data.data) {
+        // Store tokens in localStorage or secure storage
+        localStorage.setItem('access_token', data.data.tokens.access);
+        localStorage.setItem('refresh_token', data.data.tokens.refresh);
+        
+        console.log('Signup successful:', data);
 
       toast.success('Welcome!', {
         description: `Account created successfully for`,

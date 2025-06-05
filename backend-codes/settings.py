@@ -38,22 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     
     # Third-party apps
-    'rest_framework',
-    'rest_framework.authtoken',  # Required for dj-rest-auth
-    'rest_framework_simplejwt',
-    'corsheaders',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
-    'dj_rest_auth',
-    'dj_rest_auth.registration',
-    
-    # Local apps
-    'authentication',
-]
-
-MIDDLEWARE = [
+[
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -194,3 +179,11 @@ TEMPLATES = [
 ACCOUNT_LOGIN_METHODS = {'email'}
 ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
 ACCOUNT_EMAIL_VERIFICATION = 'none'  # Change to 'mandatory' in production
+
+# Channels configuration
+ASGI_APPLICATION = 'asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer'
+    }
+}
