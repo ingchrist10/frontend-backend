@@ -1,4 +1,4 @@
-import { useimport { useMutation } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { SignupFormData } from '@/lib/validations';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
@@ -36,19 +36,20 @@ export const useSignupMutation = () => {
         
         console.log('Signup successful:', data);
 
-      toast.success('Welcome!', {
-        description: `Account created successfully for`,
-      });
+        toast.success('Welcome!', {
+          description: 'Account created successfully'
+        });
+
+        router.push('/');
+      }
     },
     
     onError: (error) => {
-    console.error('Signup failed:', error.message);
-    toast.error('Signup Failed', {
+      console.error('Signup failed:', error.message);
+      toast.error('Signup Failed', {
         description: error.message || 'Something went wrong. Please try again.',
         duration: 5000,
       });
-    },
-    
-  
-  } );
+    }
+  });
 };

@@ -36,19 +36,20 @@ export const useSigninMutation = () => {
         
         console.log('Login successful:', data);
 
-      toast.success('Welcome!', {
-        description: `Account created successfully for`,
-      });
+        toast.success('Welcome back!', {
+          description: 'Login successful'
+        });
+
+        router.push('/');
+      }
     },
     
     onError: (error) => {
-    console.error('Signin failed:', error.message);
-    toast.error('Signup Failed', {
+      console.error('Login failed:', error.message);
+      toast.error('Login Failed', {
         description: error.message || 'Something went wrong. Please try again.',
         duration: 5000,
       });
-    },
-    
-  
-  } );
+    }
+  });
 };
