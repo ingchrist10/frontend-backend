@@ -11,7 +11,10 @@ async def test_websocket():
         signup_data = {
             "action": "signup",
             "email": "test@example.com",
-            "password": "Test123!"
+            "password": "Test123!@#",
+            "username": "testuser",
+            "first_name": "Test",
+            "last_name": "User"
         }
         await websocket.send(json.dumps(signup_data))
         response = await websocket.recv()

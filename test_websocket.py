@@ -8,8 +8,11 @@ async def test_signup():
         # Test signup
         signup_data = {
             "action": "signup",
-            "email": "test@example.com",
-            "password": "Test123!@#"
+            "email": "testuser123456@example.com",
+            "username": "testuser123456",
+            "password": "Test123!@#",
+            "first_name": "New",
+            "last_name": "User"
         }
         await websocket.send(json.dumps(signup_data))
         response = await websocket.recv()
@@ -21,7 +24,7 @@ async def test_signin():
         # Test signin
         signin_data = {
             "action": "signin",
-            "email": "test@example.com",
+            "email": "testuser123456@example.com",
             "password": "Test123!@#"
         }
         await websocket.send(json.dumps(signin_data))

@@ -30,6 +30,7 @@ class AuthConsumer(AsyncWebsocketConsumer):
 
     async def handle_signup(self, data):
         try:
+            print("Signup data:", data)  # Debug log
             # Run user creation in a thread to not block the event loop
             loop = asyncio.get_event_loop()
             user = await loop.run_in_executor(None, self._create_user, data)
@@ -49,8 +50,10 @@ class AuthConsumer(AsyncWebsocketConsumer):
                 }
             }
         except ValidationError as e:
+            print("Validation error:", str(e))  # Debug log
             return {'status': 'error', 'message': str(e)}
         except Exception as e:
+            print("Signup error:", str(e))  # Debug log
             return {'status': 'error', 'message': 'An error occurred during signup'}
 
     async def handle_signin(self, data):
@@ -83,6 +86,9 @@ class AuthConsumer(AsyncWebsocketConsumer):
     def _create_user(self, data):
         email = data.get('email')
         password = data.get('password')
+        username = data.get('username')
+        first_name = data.get('first_name')
+        last_name = data.get('last_name')
         
         if not email or not password:
             raise ValidationError('Email and password are required')
@@ -90,7 +96,13 @@ class AuthConsumer(AsyncWebsocketConsumer):
         if User.objects.filter(email=email).exists():
             raise ValidationError('Email already exists')
             
-        user = User.objects.create_user(email=email, password=password)
+        user = User.objects.create_user(
+            email=email,
+            password=password,
+            username=username or email.split('@')[0],
+            first_name=first_name or '',
+            last_name=last_name or ''
+        )
         return user
 
     def _authenticate_user(self, email, password):
