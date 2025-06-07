@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+always check the terminal output and background logs to catch any specific error after executing each command
